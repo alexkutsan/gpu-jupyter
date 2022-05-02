@@ -37,6 +37,13 @@ USER root
 # Install all OS dependencies for notebook server that starts but lacks all
 # features (e.g., download as all possible file formats)
 ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-key del 7fa2af80 & \
+    rm /etc/apt/sources.list.d/cuda.list && \
+    rm  /etc/apt/sources.list.d/nvidia-ml.list
+ADD  https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-keyring_1.0-1_all.deb /opt
+RUN dpkg -i /opt/cuda-keyring_1.0-1_all.deb
+
 RUN apt-get update --yes && \
     # - apt-get upgrade is run to patch known vulnerabilities in apt-get packages as
     #   the ubuntu base image is rebuilt too seldom sometimes (less than once a month)
